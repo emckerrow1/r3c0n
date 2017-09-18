@@ -1,0 +1,249 @@
+.panel-custom {
+	background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.panel-custom>.panel-borderless{
+	border: 1px solid #9f1931;
+	background-color:rgba(0,0,0,0) !important;
+}
+.panel-custom>.panel-borderless>.panel-heading {
+	color:#fff;
+	background-color:#9f1931;
+
+}
+
+.panel-custom>.panel-borderless>.panel-body {
+	color:white;
+	background-color: rgba(51, 51, 51, 0.5);
+}
+
+.panel-custom>.panel-borderless>.panel-footer {
+	color:white;
+	border-top: 1px solid #555;
+	background-color: rgba(0, 0, 0, 0.65);
+}
+
+/* background */
+body {
+	background-color: #333 !important;
+	overflow: hidden;
+}
+
+#canvas {
+	top:0px;
+	z-index:-1;
+	position:fixed;
+	background-color: #000 !important;
+	display: block;
+}
+
+/* navbar bar */
+.navbar {
+  margin-bottom: 0 !important;
+  border-radius: 0;
+}
+
+.row.content {height: 450px}
+
+.sidenav {
+  position: fixed;
+  color:white;
+  padding-top: 20px;
+  background-color: rgba(51,51,51,0.75);
+  height: 100%;
+}
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+  .row.content {height:auto;} 
+}
+
+/* loading bar */
+@keyframes radar {
+	to {
+		transform: rotateZ(360deg);
+	}
+}
+
+@keyframes text {
+	0%,
+	100% {
+		opacity: .5;
+	}
+	80% {
+		opacity: 0;
+	}
+}
+
+#radar-loader,
+#radar-loader:before,
+#radar-loader:after {
+	position: absolute;
+	border-radius: 1000rem;
+}
+
+#radar-loader {
+	overflow: hidden;
+	top: 50%;
+	left: 50%;
+	width: 15rem;
+	height: 15rem;
+	margin: -7.5rem 0 0 -7.5rem;
+	background-color: rgb(0, 80, 0);
+	background-image:
+	linear-gradient(90deg, rgba(255, 255, 255, .1) 1px, transparent 1px)
+	,	linear-gradient(rgba(255, 255, 255, .1) 1px, transparent 1px)
+	,	repeating-radial-gradient(closest-side, transparent, rgba(255, 255, 255, .3) 1px, transparent 1px, transparent 10px)
+	,	radial-gradient(circle, rgba(0, 0, 0, .3), transparent);
+	background-size: 1px 15rem, 15rem 1px, cover, cover;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	border: .5rem solid rgb(120, 120, 120);
+	box-shadow:
+		0 0 1rem rgba(0, 0, 0, .8)
+	,	0 0 5rem rgba(0, 80, 0, .5)
+	,	inset 0 0 3rem rgba(0, 0, 0, .3)
+	,	inset 0 0 1rem rgba(0, 0, 0, .5);
+}
+
+#radar-loader:before {
+	content: "";
+	width: 100%;
+	height: 100%;
+	background-image: 
+		linear-gradient(90deg, rgba(255, 255, 255, .8), transparent 1px)
+	,	linear-gradient(45deg, rgba(255, 255, 255, .1), transparent);
+	background-position: 100% 100%;
+	background-size: 50% 50%;
+	background-repeat: no-repeat;
+	animation: radar 3000ms linear infinite;
+}
+
+#radar-loader:after {
+	opacity: 0;
+	content: "Loading";
+	top: 3.5rem;
+	right: 7rem;
+	width: 2.5rem;
+	height: 2.5rem;
+	font-size: 1.8rem;
+	line-height: 2.5rem;
+	text-align: center;
+	color: rgba(255, 255, 255, .8);
+	border: .1rem dotted rgba(255, 255, 255, .8);
+	animation: text 3000ms ease-in-out 1500ms infinite;
+}
+@keyframes logo {
+  0% { margin-right: -350px; padding-left: 500px;}
+  100% { margin-right: 0px; padding-left: 0px;}
+}
+@keyframes heading {
+  0% { opacity: 0; }
+  50% { opacity: .1; }
+  100% { opacity: 1; }
+}
+
+.heading {
+  color:white;
+  animation-name: heading;
+  animation-duration: 3s;
+  font-family: 'Amaranth', sans-serif;
+  font-size: 24pt;
+  z-index:5;
+}
+
+.logo {
+  z-index:1;
+  animation-name: logo;
+  animation-duration: 3s;
+  height: 50px;
+}
+
+/* left nav bar */
+
+.menu-tree ul
+{
+  opacity:0.5;
+  height: 1px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.menu-tree .show-menu:checked ~ ul
+{  
+  opacity:1;
+  height: auto;
+  overflow: hidden;
+}
+a, a:link, a:visited {color: white}
+
+.link, .link:link, .link:visited
+{
+  color: white;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+}
+
+b{font-weight: 400;}
+
+ul
+{
+  padding: 0 0 0 0.5rem;
+}
+
+li
+{
+  list-style: none;
+  padding:0.5rem;
+  padding-bottom: 0;
+}
+
+.menu-tree,
+.menu-tree a,
+.menu-tree a:link
+{
+  color: whitesmoke;
+  text-decoration: none;
+}
+
+.menu-tree
+{
+  background-color: #444;
+  max-width: 200px;
+  border-radius: 0.2rem;
+  margin: 0 auto;
+}
+
+.level-01
+{
+  background-color: #555;
+}
+
+.level-02
+{
+  background-color: #666;
+}
+
+.show-menu
+{
+  display: none;
+}
+
+.menu-tree .enlarge:after
+{
+  content:'+ ';
+  display: inline-block;
+  font-weight: light;
+  border: rgba(255,255,255,.5) solid 1px;
+  border-radius: 3px;
+  padding: 0 0.5rem;
+  margin-right: 1rem;
+}
+
+.menu-tree .show-menu:checked ~ .enlarge:after
+{
+  content:'-';
+}

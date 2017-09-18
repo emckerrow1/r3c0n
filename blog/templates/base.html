@@ -1,0 +1,245 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link href="{% static 'css/r3c0n_infosec.css' %}" rel="stylesheet">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link href="https://fonts.googleapis.com/css?family=Amaranth" rel="stylesheet">
+	</head>
+	<body>
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>                        
+		      </button>
+		      <a class="navbar-brand" href="/">  
+		      <table style="margin-top:-14px">
+                <td>
+                   <img class="logo"  src="{% static 'img/logo.png' %}" alt="Header Image">
+                </td>
+                <td>
+                   <div class="heading">R3c0n-Infosec</div>
+                </td>
+              </table>
+            </a>
+		    </div>
+		    <div class="collapse navbar-collapse" id="myNavbar">
+		      <ul class="nav navbar-nav">
+		        <li><a href="#">About</a></li>
+		        <li><a href="#">Projects</a></li>
+		        <li><a href="#">Contact</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+		        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+		<div class="col-sm-2 sidenav panel-body">
+			<h4>Blog</h4>	
+      			<nav>
+      				<ul class='menu-tree'>
+      					<li>
+      						{% for year, months in all_posts.items %}
+      						<input type="checkbox" class="show-menu" id="{{year}}" checked>
+								<label for="{{year}}" class="enlarge"></label>
+								<a href="">{{year}}</a>
+								<ul class="level-01">
+									{% for month, posts_in_month in months.items %}
+										<input type="checkbox" class="show-menu" id="{{month}}" checked>
+										<label for="{{month}}" class="enlarge"></label>
+										<a href="">{{month}}</a>
+										<ul class="level-02">
+										{{post}}
+										{% for post in posts_in_month %}
+												{% for name, link in post.items %}
+												<li>
+													<a href="{{link}}">{{name}}</a>
+												</li>      								
+      											{% endfor %}								
+      									{% endfor %}
+										</ul>
+
+      								{% endfor %}
+								</ul>
+
+      						{% endfor %}
+      					</li>
+      				</ul>
+      			</nav>
+		</div>
+		<div class="col-sm-10">
+			{% block content %}
+
+			{% endblock %}
+		</div>	
+	
+	    <canvas id="canvas"></canvas>
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	{% block javascript %}
+
+	{% endblock %}	
+		<script type="text/javascript">
+
+
+var canvas,
+	ctx,
+	width,
+	height,
+	size,
+	lines,
+	tick;
+
+function line() {
+	this.path = [];
+	this.speed = rand( 5, 10 );
+	this.count = randInt( 10, 30 );
+	this.x = width / 2, + 1;
+	this.y = height / 2 + 1;
+	this.target = { x: width / 2, y: height / 2 };
+	this.dist = 0;
+	this.angle = 0;
+	this.hue = tick / 5;
+	this.life = 1;
+}
+
+line.prototype.step = function( i ) {
+	this.x += Math.cos( this.angle ) * this.speed;
+	this.y += Math.sin( this.angle ) * this.speed;
+	
+	
+	if( this.dist < this.speed ) {
+		this.x = this.target.x;
+		this.y = this.target.y;
+		this.changeTarget();
+	}
+		
+	this.path.push( { x: this.x, y: this.y } );	
+	if( this.path.length > this.count ) {
+		this.path.shift();
+	}
+	
+	this.life -= 0.001;
+	
+	if( this.life <= 0 ) {
+		this.path = null;
+		lines.splice( i, 1 );	
+	}
+};
+
+
+line.prototype.changeTarget = function() {
+	var randStart = randInt( 0, 3 );
+	switch( randStart ) {
+		case 0: // up
+			this.target.y = this.y - size;
+			break;
+		case 1: // right
+			this.target.x = this.x + size;
+			break;
+		case 2: // down
+			this.target.y = this.y + size;
+			break;
+		case 3: // left
+			this.target.x = this.x - size;
+	}
+};
+
+line.prototype.draw = function( i ) {
+	ctx.beginPath();
+	var rando = rand( 0, 10 );
+	for( var j = 0, length = this.path.length; j < length; j++ ) {
+		ctx[ ( j === 0 ) ? 'moveTo' : 'lineTo' ]( this.path[ j ].x + rand( -rando, rando ), this.path[ j ].y + rand( -rando, rando ) );
+	}
+	ctx.strokeStyle = 'hsla(' + rand( this.hue, this.hue + 30 ) + ', 80%, 55%, ' + ( this.life / 3 ) + ')';
+	ctx.lineWidth = rand( 0.1, 2 );
+	ctx.stroke();
+};
+
+function rand( min, max ) {
+	return Math.random() * ( max - min ) + min;
+}
+
+function randInt( min, max ) {
+	return Math.floor( min + Math.random() * ( max - min + 1 ) );
+};
+
+function init() {
+	canvas = document.getElementById( 'canvas' );
+	ctx = canvas.getContext( '2d' );
+	size = 30;
+	lines = [];
+	reset();
+	loop();
+}
+
+function reset() {
+	width = Math.ceil( window.innerWidth / 2 ) * 2;
+	height = Math.ceil( window.innerHeight / 2 ) * 2;
+	tick = 0;
+	
+	lines.length = 0;	
+	canvas.width = width;
+	canvas.height = height;
+}
+
+function create() {
+	if( tick % 10 === 0 ) {		
+		lines.push( new line());
+	}
+}
+
+function step() {
+	var i = lines.length;
+	while( i-- ) {
+		lines[ i ].step( i );	
+	}
+}
+
+function clear() {
+	ctx.globalCompositeOperation = 'destination-out';
+	ctx.fillStyle = 'hsla(0, 0%, 0%, 0.1';
+	ctx.fillRect( 0, 0, width, height );
+	ctx.globalCompositeOperation = 'lighter';
+}
+
+function draw() {
+	ctx.save();
+	ctx.translate( width / 2, height / 2 );
+	ctx.rotate( tick * 0.0005 );
+	var scale = 0.8 + Math.cos( tick * 0.02 ) * 0.05;
+	ctx.scale( scale, scale );
+	ctx.translate( -width / 2, -height / 2 );
+	var i = lines.length;
+	while( i-- ) {
+		lines[ i ].draw( i );	
+	}
+	ctx.restore();
+}
+
+function loop() {
+	requestAnimationFrame( loop );
+	create();
+	step();
+	clear();
+	draw();
+	tick++;
+}
+
+function onresize() {
+	reset();	
+}
+
+window.addEventListener( 'resize', onresize );
+
+init();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div class='panel panel-custom col-md-12'>
+	<div class='panel-borderless'>
+		<div class='panel-body'>
+			<h1 class='panel-custom'>
+			{{ post.title }}
+			</h1>
+			<img src="{{ MEDIA_URL }}{{ post.image_file.url }}" alt="{{ post.title }}" style="width:50%; max-height:300px; position:relative; left:25%;">
+			<div class='panel-custom'>
+			{% include "."|add:post.upload_file.url %}
+			</div>
+		</div>
+		<div class='panel-footer'>
+			<table style="width:100%; color:gold; font-size:14px;">
+				<td>{{ post.author }}</td>
+				<td style='float:right;'>{{ post.created_date }}</td>
+			</table>
+		</div>
+	</div>
+	</div>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

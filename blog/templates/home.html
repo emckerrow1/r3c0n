@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='row'>
+{% for post in posts %}
+	<div class='panel panel-custom col-md-6'>
+	<div class='panel-borderless' onclick='go_to_article("/article/{{ post.upload_file }}")'>
+		<div class='panel-heading' style='font-weight:bold;'>{{ post.title }}</div>
+		<div class='panel-body'>
+			<img src="{{ MEDIA_URL }}{{ post.image_file.url }}" alt="{{ post.title }}" style="width:100%; height:300px;">
+		</div>
+		<div class='panel-footer'>
+			<table style="width:100%; color:gold; font-size:14px;">
+				<td>{{ post.author }}</td>
+				<td style='float:right;'>{{ post.created_date }}</td>
+			</table>
+		</div>
+	</div>
+	</div>
+	{% if forloop.counter|divisibleby:2 %}</div><div class='row'>{% endif %}
+{% endfor %}
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+	function go_to_article(article) {
+		location.href = article.replace('.html', '');
+	}
+</script>
+{% endblock %}
