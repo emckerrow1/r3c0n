@@ -1,14 +1,16 @@
 .panel-custom {
+	margin-top:30px;
 	background-color: rgba(0, 0, 0, 0) !important;
 }
 
 .panel-custom>.panel-borderless{
-	border: 1px solid #9f1931;
+	border: 1px solid #681020;
+    border-radius: 4px;
 	background-color:rgba(0,0,0,0) !important;
 }
 .panel-custom>.panel-borderless>.panel-heading {
 	color:#fff;
-	background-color:#9f1931;
+	background-color: rgba(159,25,49,.65);
 
 }
 
@@ -212,7 +214,7 @@ li
 .menu-tree
 {
   background-color: #444;
-  max-width: 200px;
+  max-width: 100%;
   border-radius: 0.2rem;
   margin: 0 auto;
 }

@@ -18,5 +18,14 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-
         return self.title
+
+class Metrics(models.Model):
+    ip = models.CharField(max_length=15, unique=True)
+    home_count = models.IntegerField(default=0)
+    count = models.ManyToManyField(Post, through='Metric_Count')
+
+class Metric_Count(models.Model):
+    post = models.ForeignKey(Post)
+    ip = models.ForeignKey(Metrics)
+    count = models.IntegerField(default=1)
