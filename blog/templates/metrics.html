@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load count_visit %}
+
+{% block content %}
+<div class='row'>
+	<div class='col-md-3'></div>
+	<div class='panel panel-custom col-md-5'>
+	<div class='panel-borderless'>
+		<div class='panel-heading'>
+				Stats
+		</div>
+		<div class='panel-body'>
+		<h4 style="text-align:right;">Visit Count: {{metrics.count}}</h4>
+        <div class='line-div'></div>
+		<table id='ip_stats' class='table' style='width:100%'>
+            <thead>
+            	<tr style='border-bottom: 1px solid #681020;'>
+            		<th>IP Address</th>
+            		<th>Article Title</th>
+            		<th>Visit Count</th>
+            	</tr>
+            </thead>
+            <tbody>
+            	{% for metric in metrics %}
+            	<tr>
+            	    <td>
+            	        {{metric.ip}}<br>
+                         {% for article in metric.count.all %}
+                            <br>
+                         {% endfor %}
+                         <div class='line-div'></div>
+                         Total<br>
+                         <div class='line-div'></div>
+            	    </td>
+            	    <td>
+            	         Home<br>
+                         {% for article in metric.count.all %}
+                            {{article.title}}<br>
+                         {% endfor %}
+                         <div class='line-div'></div>
+                         {{metric.count.count}} (excluding Home)<br>
+                         <div class='line-div'></div>
+            	    </td>
+            	    <td>
+            	    	{{metric.home_count}}<br>
+                         {% for article in metric.count.all %}
+                            {{article.metric_count_set.first.visit_count}}<br>
+                         {% endfor %}
+                         <div class='line-div'></div>
+                         {{metric.count.all|__count_page_visits:metric.home_count}}<br>
+                         <div class='line-div'></div>
+            	    </td>
+
+                </tr>
+            	{% endfor %}
+            </tbody>
+		</table>
+		</div>
+	</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		$(document).ready(function() {
+		    $('#ip_stats').DataTable();
+		} );
+	</script>
+
+{% endblock %}

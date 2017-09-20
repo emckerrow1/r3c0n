@@ -25,10 +25,41 @@
 	background-color: rgba(0, 0, 0, 0.65);
 }
 
+.btn-custom {
+	color: #fff;
+    background-color: #681020;
+    border-color: rgb(159,25,49);
+}
+
+.action-controls {
+    float: right;
+    text-align: right;
+    padding: 5px;
+    color: white;
+    background-color: rgba(51, 51, 51, 0.75);
+    margin-top: 1px;
+    margin-right: 5px;
+    min-width: 100px;
+    border-radius: 5px;
+}
+
 /* background */
 body {
 	background-color: #333 !important;
-	overflow: hidden;
+}
+
+table {
+	color:white;
+}
+select, input {
+	background-color: #444;
+    border-color: #666;
+}
+.line-div {	
+    border: .5px solid #681020;
+    margin-right: -8px;
+    margin-left: -8px;
+    margin-bottom: 3px;
 }
 
 #canvas {

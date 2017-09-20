@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='row'>
+	<div class='col-md-3'></div>
+	<div class='panel panel-custom col-md-5'>
+	<div class='panel-borderless'>
+		<div class='panel-heading'>
+				Publish New Article
+		</div>
+		<div class='panel-body'>
+			<form method="post" action="" autocomplete="off" enctype="multipart/form-data">
+			{% csrf_token %}
+				<center>
+					{% if form.errors %}
+				      <p class="bs-component" style="color:red;text-align:center">
+			                Please fix the following: <br>
+			                <ul>
+			                {% for field in form %}
+
+			                    {% if field.errors %}
+			                        <li style="color:red;">{{field.label}} - {{ field.errors|striptags }}</li>
+			                    {% endif %}
+			                {% endfor %}
+			                </ul>
+			           </p>
+			        {% endif %}
+
+				    <table style="border-spacing:10px; border-collapse:separate; width:100%;">
+			            <tr>
+			                <td width="30%" style="border: none; text-align:right;">
+			                	Author:	
+			                </td>
+			                <td width="70%" style="border: none;">
+			                	{{form.author}}
+			                </td>
+			            </tr>
+			            <tr>
+			                <td width="30%" style="border: none;text-align:right;">
+			                	Title:	
+			                </td>
+			                <td width="70%" style="border: none;">
+			                	 {{form.title}}
+			                </td>
+			            </tr>
+			            <tr>
+			                <td width="30%" style="border: none;text-align:right;">
+			                	Article Image:
+			                </td>
+			                <td width="70%" style="border: none;">
+			                	{{form.image_file}}
+			                </td>
+			            </tr>
+			            <tr>
+			                <td width="30%" style="border: none;text-align:right;">
+			                	Article File (HTML):
+			                </td>
+			                <td width="70%" style="border: none;">
+			                	{{form.upload_file}}
+			                </td>
+			            </tr>
+			        </table>
+			        <br>
+			        <input class='btn btn-custom' type='submit' value='Create'/>
+
+			   	</center>
+			</form>
+		</div
+	</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

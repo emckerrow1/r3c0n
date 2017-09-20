@@ -17,10 +17,17 @@ from django.views import static
 from django.conf.urls import url
 from django.contrib import admin
 from blog import views
+from blog import forms
 from r3c0n_infosec import settings
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^admin/panel/$', auth_views.login, {"template_name": "admin_panel.html",
+                                       "authentication_form": forms.LoginForm,
+                                       },name="login"),
+    url(r'^admin/metrics/$', views.metrics),
+    url(r'^admin/add/$', views.add_article),
     url(r'^$', views.home),
     url(r'^article/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<file_name>.*)/$', views.article),
     url(r'^media/(?P<path>.*)$', static.serve, {'document_root': settings.MEDIA_ROOT}),

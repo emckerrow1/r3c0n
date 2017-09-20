@@ -6,6 +6,8 @@
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<link href="https://fonts.googleapis.com/css?family=Amaranth" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse">
@@ -29,13 +31,15 @@
 		    </div>
 		    <div class="collapse navbar-collapse" id="myNavbar">
 		      <ul class="nav navbar-nav">
-		        <li><a href="#">About</a></li>
-		        <li><a href="#">Projects</a></li>
-		        <li><a href="#">Contact</a></li>
+		        <li><a href="#"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
+		        <li><a href="#"><span class="glyphicon glyphicon-hourglass"></span> Projects</a></li>
+		        <li><a href="#"><span class="glyphicon glyphicon-earphone"></span> Contact</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		      {% if user.is_superuser %}
 		        <li><a href="/admin"><span class="glyphicon glyphicon-lock"></span> Admin Panel</a></li>
+		        <li><a href="/admin/metrics"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
+		        <li><a href="/admin/add"><span class="glyphicon glyphicon-plus"></span> Add Article</a></li>
 		      {% else %}
 		        <li><a href="#"><span class="glyphicon glyphicon-thumbs-up"></span> Subscribe</a></li>
 		      {% endif %}
@@ -86,6 +90,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<!-- Latest compiled JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	    <script src = "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+	<script src = "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 	{% block javascript %}
 
 	{% endblock %}	
