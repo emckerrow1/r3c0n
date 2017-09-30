@@ -2,9 +2,10 @@
 {% load count_visit %}
 
 {% block content %}
+<!-- page visits -->
 <div class='row'>
-	<div class='col-md-3'></div>
-	<div class='panel panel-custom col-md-5'>
+	<div class='col-md-2'></div>
+	<div class='panel panel-custom col-md-8'>
 	<div class='panel-borderless'>
 		<div class='panel-heading'>
 				Stats
@@ -58,6 +59,44 @@
 		</div>
 	</div>
 	</div>
+</div>
+
+<!-- subscribers -->
+
+<div class='row'>
+    <div class='col-md-2'></div>
+    <div class='panel panel-custom col-md-8'>
+    <div class='panel-borderless'>
+        <div class='panel-heading'>
+                Stats
+        </div>
+        <div class='panel-body'>
+        <h4 style="text-align:right;">Total Subscribers: {{total_subscribers}} (active: {{active_subscribers.count}})</h4>
+        <div class='line-div'></div>
+        <table id='ip_stats' class='table' style='width:100%'>
+            <thead>
+                <tr style='border-bottom: 1px solid #681020;'>
+                    <th>Email Address</th>
+                    <th>Subscribed At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscriber in active_subscribers %}
+                <tr>
+                    <td>
+                    {{subscriber.email}}
+                    </td>
+                    <td>
+                    {{subscriber.subscribed_at}}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    </div>
 </div>
 {% endblock %}
 

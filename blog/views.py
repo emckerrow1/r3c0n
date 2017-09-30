@@ -3,10 +3,12 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
 from models import Post
 from models import Metrics
+from models import Subscribers
 from models import Metric_Count
 
 from forms import AddArticleForm
@@ -15,7 +17,7 @@ import re
 
 # Create your views here.
 def home(request):
-    #_create_metrics(request, 'home')
+    _create_metrics(request, 'home')
     if request.user.is_superuser:
         posts = Post.objects.all()
         if request.method == 'POST':
@@ -34,22 +36,35 @@ def home(request):
 def article(request, year, month, file_name):
     file_name = year+'/'+month+'/'+file_name+'.html'
     post = Post.objects.get(upload_file=file_name)
-    #_create_metrics(request, post)
+    _create_metrics(request, post)
     all_posts = _get_all_post()
     return render(request, 'article.html', {
         'all_posts':all_posts,
         'post':post,
     })
 
+def about(request):
+    all_posts = _get_all_post()
+    # not including metric for about
+    # if required in the future add the same as home
+    #_create_metrics(request, post)
+    return render(request, 'about.html', {
+            'all_posts':all_posts,
+        })
+
 @login_required(login_url="login")
 def metrics(request):
     if not request.user.is_superuser:
         return HttpResponse(status=404)
     metrics = Metrics.objects.all()
+    subscriber_all = Subscribers.objects.all()
+    active_subscribers = subscriber_all.filter(unsubscribed_at__isnull=True)
     all_posts = _get_all_post()
     return render(request, 'metrics.html', {
         'all_posts':all_posts,
         'metrics':metrics,
+        'total_subscribers':len(subscriber_all),
+        'active_subscribers':active_subscribers,
     })
 
 @login_required(login_url="login")
@@ -68,6 +83,33 @@ def add_article(request):
         'all_posts':all_posts,
         'form':form,
     })
+
+# api functions
+
+def api_subscribe(request):
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            if '@' in request.POST['email']:
+                subscriber, created = Subscribers.objects.get_or_create(email=request.POST['email'])
+                if not created:
+                    if subscriber.unsubscribed_at == None:
+                        return JsonResponse({'subscribe':'subscribed'})
+                    else:
+                        subscriber.unsubscribed_at = None
+                        subscriber.save()
+                return JsonResponse({'subscribe':'success'})
+    return JsonResponse({'subscribe':'failed'})
+
+def api_unsubscribe(request):
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            if '@' in request.POST['email']:
+                subscriber, created = Subscribers.objects.get_or_create(email=request.POST['email'])
+                if not created:
+                    if subscriber.unsubscribed_at == None:
+                        subscriber.unsubscribe()
+                        return JsonResponse({'unsubscribe':'success'})
+    return JsonResponse({'unsubscribe':'failed'})
 
 # command functions
 

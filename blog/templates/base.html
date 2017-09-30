@@ -21,7 +21,7 @@
 		      <a class="navbar-brand" href="/">  
 		      <table style="margin-top:-14px">
                 <td>
-                   <img class="logo"  src="{% static 'img/logo.png' %}" alt="Header Image">
+                   <img class="logo"  src="{% static 'img/logo1.png' %}" alt="Header Image">
                 </td>
                 <td>
                    <div class="heading">R3c0n-Infosec</div>
@@ -31,22 +31,37 @@
 		    </div>
 		    <div class="collapse navbar-collapse" id="myNavbar">
 		      <ul class="nav navbar-nav">
-		        <li><a href="#"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-		        <li><a href="#"><span class="glyphicon glyphicon-hourglass"></span> Projects</a></li>
-		        <li><a href="#"><span class="glyphicon glyphicon-earphone"></span> Contact</a></li>
+		        <li><a href="/about"><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		      {% if user.is_superuser %}
 		        <li><a href="/admin"><span class="glyphicon glyphicon-lock"></span> Admin Panel</a></li>
 		        <li><a href="/admin/metrics"><span class="glyphicon glyphicon-stats"></span> Stats</a></li>
 		        <li><a href="/admin/add"><span class="glyphicon glyphicon-plus"></span> Add Article</a></li>
+		        <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 		      {% else %}
-		        <li><a href="#"><span class="glyphicon glyphicon-thumbs-up"></span> Subscribe</a></li>
+		        <li><a href="#subscribe-model" data-toggle="modal" data-target="#subscribe-model"><span class="glyphicon glyphicon-thumbs-up"></span> Subscribe</a></li>
 		      {% endif %}
 		      </ul>
 		    </div>
 		  </div>
 		</nav>
+		<div id='subscribe-success' class="alert alert-success alert-dismissable" style="display:none">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Subscribed!</strong> You will now recieve emails when new blogs are available.
+		</div>
+		<div id='subscribe-failed' class="alert alert-danger alert-dismissable" style="display:none">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Subscription Failed</strong> This maybe due to the email address enter is invalid or already subscribed.
+		</div>
+		<div id='unsubscribe-success' class="alert alert-success alert-dismissable" style="display:none">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Unsubscribed :(</strong> Well this is unfortunate. Please let us know why and how we can improve, please contact us. Details can be found on the about page.
+		</div>
+		<div id='unsubscribe-failed' class="alert alert-danger alert-dismissable" style="display:none">
+			<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<strong>Subscription Failed</strong> If you really want to unsubscribe please enter the correct email address or please contact us. Details can be found on the about page.
+		</div>
 		<div class="col-sm-2 sidenav panel-body">
 			<h4>Blog</h4>	
       			<nav>
@@ -83,172 +98,48 @@
 			{% block content %}
 
 			{% endblock %}
-		</div>	
+		</div>
+
+	<!-- subscribe -->
+	<div id="subscribe-model" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+	   <form id='subscribe-form'>
+	   {% csrf_token %}
+	    <div class="modal-content model-custom">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Subscribe</h4>
+	      </div>
+	      <div class="modal-body">
+			        <label>Email Address</label>
+			        <input id='subscribe-email' type="text" name="email">
+	      </div>
+	      <div class="modal-footer">
+	        <a href='#' class='pull-left' id='unsubscribe-link'>Unsubscribe</a>
+			<button type='button' id='subscribe-btn' class='btn btn-custom'>Subscribe</button>
+	        <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	   </form>
+
+	  </div>
+	</div>
+
 	
-	    <canvas id="canvas"></canvas>
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	    <script src = "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+	<canvas id="canvas"></canvas>
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src = "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 	<script src = "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+	<script type="text/javascript" src='{% static "js/background.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/general.js" %}'></script>
 	{% block javascript %}
 
 	{% endblock %}	
-		<script type="text/javascript">
 
-
-var canvas,
-	ctx,
-	width,
-	height,
-	size,
-	lines,
-	tick;
-
-function line() {
-	this.path = [];
-	this.speed = rand( 5, 10 );
-	this.count = randInt( 10, 30 );
-	this.x = width / 2, + 1;
-	this.y = height / 2 + 1;
-	this.target = { x: width / 2, y: height / 2 };
-	this.dist = 0;
-	this.angle = 0;
-	this.hue = tick / 5;
-	this.life = 1;
-}
-
-line.prototype.step = function( i ) {
-	this.x += Math.cos( this.angle ) * this.speed;
-	this.y += Math.sin( this.angle ) * this.speed;
-	
-	
-	if( this.dist < this.speed ) {
-		this.x = this.target.x;
-		this.y = this.target.y;
-		this.changeTarget();
-	}
-		
-	this.path.push( { x: this.x, y: this.y } );	
-	if( this.path.length > this.count ) {
-		this.path.shift();
-	}
-	
-	this.life -= 0.001;
-	
-	if( this.life <= 0 ) {
-		this.path = null;
-		lines.splice( i, 1 );	
-	}
-};
-
-
-line.prototype.changeTarget = function() {
-	var randStart = randInt( 0, 3 );
-	switch( randStart ) {
-		case 0: // up
-			this.target.y = this.y - size;
-			break;
-		case 1: // right
-			this.target.x = this.x + size;
-			break;
-		case 2: // down
-			this.target.y = this.y + size;
-			break;
-		case 3: // left
-			this.target.x = this.x - size;
-	}
-};
-
-line.prototype.draw = function( i ) {
-	ctx.beginPath();
-	var rando = rand( 0, 10 );
-	for( var j = 0, length = this.path.length; j < length; j++ ) {
-		ctx[ ( j === 0 ) ? 'moveTo' : 'lineTo' ]( this.path[ j ].x + rand( -rando, rando ), this.path[ j ].y + rand( -rando, rando ) );
-	}
-	ctx.strokeStyle = 'hsla(' + rand( this.hue, this.hue + 30 ) + ', 80%, 55%, ' + ( this.life / 3 ) + ')';
-	ctx.lineWidth = rand( 0.1, 2 );
-	ctx.stroke();
-};
-
-function rand( min, max ) {
-	return Math.random() * ( max - min ) + min;
-}
-
-function randInt( min, max ) {
-	return Math.floor( min + Math.random() * ( max - min + 1 ) );
-};
-
-function init() {
-	canvas = document.getElementById( 'canvas' );
-	ctx = canvas.getContext( '2d' );
-	size = 30;
-	lines = [];
-	reset();
-	loop();
-}
-
-function reset() {
-	width = Math.ceil( window.innerWidth / 2 ) * 2;
-	height = Math.ceil( window.innerHeight / 2 ) * 2;
-	tick = 0;
-	
-	lines.length = 0;	
-	canvas.width = width;
-	canvas.height = height;
-}
-
-function create() {
-	if( tick % 10 === 0 ) {		
-		lines.push( new line());
-	}
-}
-
-function step() {
-	var i = lines.length;
-	while( i-- ) {
-		lines[ i ].step( i );	
-	}
-}
-
-function clear() {
-	ctx.globalCompositeOperation = 'destination-out';
-	ctx.fillStyle = 'hsla(0, 0%, 0%, 0.1';
-	ctx.fillRect( 0, 0, width, height );
-	ctx.globalCompositeOperation = 'lighter';
-}
-
-function draw() {
-	ctx.save();
-	ctx.translate( width / 2, height / 2 );
-	ctx.rotate( tick * 0.0005 );
-	var scale = 0.8 + Math.cos( tick * 0.02 ) * 0.05;
-	ctx.scale( scale, scale );
-	ctx.translate( -width / 2, -height / 2 );
-	var i = lines.length;
-	while( i-- ) {
-		lines[ i ].draw( i );	
-	}
-	ctx.restore();
-}
-
-function loop() {
-	requestAnimationFrame( loop );
-	create();
-	step();
-	clear();
-	draw();
-	tick++;
-}
-
-function onresize() {
-	reset();	
-}
-
-window.addEventListener( 'resize', onresize );
-
-init();
-		</script>
 	</body>
 </html>

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class='row'>
+  <div class='col-md-4'>
+	<div class='panel panel-custom'>
+	<div class='panel-borderless' data-toggle="collapse" data-parent="#about-us" data-target="#Sc0tt1sh-Mal">
+		<div class='panel-heading' style='font-weight:bold;'>
+			<h1>Sc0tt1sh Mal</h1>
+		</div>
+		<div class='panel-body'>
+			<img src="/static/img/Sc0tt1sh_Mal_Logo.png" alt="Sc0tt1sh Mal" style="width:80%; height:300px;">
+		</div>
+		<div class='panel-footer'>
+			emckerrow1@gmail.com
+		</div>
+	</div>
+	</div>
+  </div>
+  <div class='col-md-4'>
+	<div class='panel panel-custom'>
+	<div class='panel-borderless' data-toggle='collapse' data-parent='#about-us' data-target='#Suki'>
+		<div class='panel-heading' style='font-weight:bold;'>
+			<h1>Suki</h1>
+		</div>
+		<div class='panel-body'>
+			<img src="/static/img/default_profile_pic.png" alt="Suki" style="width:100%; height:300px;">
+		</div>
+		<div class='panel-footer'>
+			suki@r3c0n-infosec.com
+		</div>
+	</div>
+	</div>
+  </div>
+  <div class='col-md-4'>
+	<div class='panel panel-custom'>
+	<div class='panel-borderless' data-toggle='collapse' data-parent='#about-us' data-target='#Jas'>
+		<div class='panel-heading' style='font-weight:bold;'>
+			<h1>Jas</h1>
+		</div>
+		<div class='panel-body'>
+			<img src="/static/img/default_profile_pic.png" alt="Jas" style="width:100%; height:300px;">
+		</div>
+		<div class='panel-footer'>
+			jas@r3c0n-infosec.com
+		</div>
+	</div>
+	</div>
+  </div>
+</div>
+
+<div class='row' id='about-us' style='padding:0px 40px;'>   
+  <div class='panel panel-custom'>
+    <div class='panel-borderless collapse' id='Sc0tt1sh-Mal'> 
+		<div class='panel-heading' style='font-weight:bold;'>
+			<h1>Sc0tt1sh Mal</h1>
+		</div>
+		<div class='panel-body'>
+			<p>Hello, Sc0tt1sh Mal here. I got into Infosec straight after Uni (Glasgow Caledonian University) in June 2016. Relocating to Birmingham to work for a small Security Information Management Company, as Cyber Security Analyst/Python Dev/Pen Tester (many hats I know). My passion lies in Malware Analysis and Django Python Dev'ing.</p>
+		</div>
+	</div>
+  </div>
+  <div class='panel panel-custom'>
+    <div class='panel-borderless collapse' id='Suki'> 
+		<div class='panel-heading' style='font-weight:bold;'>
+			<h1>Suki</h1>
+		</div>
+		<div class='panel-body'>
+			<p>Hello, this is Suki's blog profile.</p>
+		</div>
+	</div>
+  </div>
+  <div class='panel panel-custom'>
+    <div class='panel-borderless collapse' id='Jas'>
+		<div class='panel-heading' style='font-weight:bold;'>
+			<h1>Jas</h1>
+		</div>
+		<div class='panel-body'>
+			<p>Hello, this is Jas's blog profile.</p>
+		</div>
+	</div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
